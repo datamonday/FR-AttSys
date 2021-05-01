@@ -2,7 +2,7 @@
 >
 > github:https://github.com/datamonday/FR-AttSys
 
-![main_window](D:\QT Project\FR-AttSys\imgs\main_window.jpg)
+![main_window](./imgs/main_window.jpg)
 
 ---
 > Reference:

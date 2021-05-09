@@ -3,6 +3,7 @@ import os
 import sys
 import threading
 from functools import wraps
+import numpy as np
 import time
 import cv2
 import pickle
@@ -90,7 +91,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # ####################### 定义标识符 ######################
         # 被调用摄像头的id
-        self.cam_id = 0
+        self.cam_id = 1
         # try:
         #     print("Starting initialize Camera···")
         #     # 初始化摄像头
@@ -100,7 +101,6 @@ class MainWindow(QtWidgets.QMainWindow):
         #     self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 600)
         #     self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 500)
         #     self.cap.set(cv2.CAP_PROP_FPS, 30)
-        #
         # except EnvironmentError as e:
         #     print("Failed to initialized Camera!", e)
         # finally:
@@ -283,7 +283,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if not flag:
             self.ui.label_camera.clear()
             # 默认打开Windows系统笔记本自带的摄像头，如果是外接USB，可以将0改成1
-            self.cap.open(0 + self.cam_id)
+            self.cap.open(self.cam_id)
         self.th_face_recognition = threading.Thread(target=self.face_recognition)
         self.th_face_recognition.start()
 
@@ -448,9 +448,10 @@ class MainWindow(QtWidgets.QMainWindow):
         while self.cap.isOpened():
             success, frame = self.cap.read()
             QApplication.processEvents()
-            frame2 = imutils.resize(frame, width=600)  # self.ui.label_camera.width()
-            rects = detector.detectMultiScale(cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY), scaleFactor=1.1,
-                                              minNeighbors=5, minSize=(30, 30))
+            # self.ui.label_camera.width()
+            frame2 = imutils.resize(frame, width=600)
+            # rects = detector.detectMultiScale(cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY), scaleFactor=1.1,
+            #                                   minNeighbors=5, minSize=(30, 30))
 
             # 完成此帧处理的时间
             new_frame_time = time.time()
@@ -470,11 +471,10 @@ class MainWindow(QtWidgets.QMainWindow):
             # fps_str = "FPS: %.2f" % fps
             fps_str = str(fps)
 
-            for (x, y, w, h) in rects:
-                cv2.rectangle(frame2, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                frame2 = cv2.putText(frame2, "Detecting Faces",
-                                     (50, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (200, 100, 50), 2)
-
+            # for (x, y, w, h) in rects:
+            #     cv2.rectangle(frame2, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            #     frame2 = cv2.putText(frame2, "Detecting Faces",
+            #                          (50, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (200, 100, 50), 2)
             # cv2.putText(frame2, fps_str, (20, 20), cv2.FONT_HERSHEY_DUPLEX, 0.75, (0, 255, 0), 2)
 
             # 这里指的是显示原图
@@ -499,7 +499,6 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.ui.pb_startCamRec.setEnabled(False)
                 self.ui.pb_stopFace.setEnabled(False)
                 self.ui.textBrowser.append("[INFO] Turn off the camera successfully!")
-                self.ui.textBrowser.moveCursor(self.cursor.End)
                 break
 
         # 因为最后一张画面会显示在GUI中，此处实现清除。
@@ -582,7 +581,7 @@ class MainWindow(QtWidgets.QMainWindow):
                         # 执行分类识别面部
                         predicts = recognizer.predict_proba(vec)[0]
                         j = np.argmax(predicts)
-                        probability = preds[j]
+                        probability = predicts[j]
                         name = le.classes_[j]
                         # 绘制面部的边界框以及相关的概率
                         text = "{}: {:.2f}%".format(name, probability * 100)
@@ -654,9 +653,8 @@ class CollectData(QWidget):
         # 初始化信息导入列表
         self.users = []
         # 初始化摄像头
-        self.cam_id = cv2.CAP_DSHOW + 0
-        self.cap = cv2.VideoCapture()
-
+        self.cam_id = 1
+        self.cap = cv2.VideoCapture(self.cam_id)
         # 初始化保存人脸数目
         self.photos = 0
 

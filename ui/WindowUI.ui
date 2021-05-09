@@ -68,22 +68,12 @@
      <string>开始识别</string>
     </property>
    </widget>
-   <widget class="QListView" name="listView">
-    <property name="geometry">
-     <rect>
-      <x>640</x>
-      <y>549</y>
-      <width>421</width>
-      <height>151</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pb_saveLog">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>709</y>
-      <width>121</width>
+      <x>780</x>
+      <y>710</y>
+      <width>131</width>
       <height>41</height>
      </rect>
     </property>
@@ -110,9 +100,9 @@
    <widget class="QPushButton" name="pb_exit">
     <property name="geometry">
      <rect>
-      <x>880</x>
+      <x>920</x>
       <y>709</y>
-      <width>181</width>
+      <width>141</width>
       <height>41</height>
      </rect>
     </property>
@@ -167,7 +157,7 @@
      <rect>
       <x>490</x>
       <y>630</y>
-      <width>131</width>
+      <width>141</width>
       <height>51</height>
      </rect>
     </property>
@@ -189,9 +179,9 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>540</y>
+      <y>530</y>
       <width>431</width>
-      <height>61</height>
+      <height>81</height>
      </rect>
     </property>
    </widget>
@@ -216,7 +206,7 @@
      <rect>
       <x>510</x>
       <y>550</y>
-      <width>111</width>
+      <width>121</width>
       <height>22</height>
      </rect>
     </property>
@@ -254,12 +244,12 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pb_refreshUI">
+   <widget class="QPushButton" name="pb_stopFace">
     <property name="geometry">
      <rect>
-      <x>770</x>
+      <x>640</x>
       <y>710</y>
-      <width>101</width>
+      <width>131</width>
       <height>41</height>
      </rect>
     </property>
@@ -268,7 +258,7 @@
 pt &quot;宋体&quot;;</string>
     </property>
     <property name="text">
-     <string>刷新界面</string>
+     <string>停止识别</string>
     </property>
    </widget>
    <widget class="QGraphicsView" name="graphicsView">
@@ -351,7 +341,7 @@ pt &quot;宋体&quot;;</string>
      <rect>
       <x>580</x>
       <y>580</y>
-      <width>41</width>
+      <width>51</width>
       <height>41</height>
      </rect>
     </property>
@@ -414,7 +404,7 @@ pt &quot;宋体&quot;;</string>
         <string notr="true">font: 75 10pt &quot;Times New Roman&quot;;</string>
        </property>
        <property name="text">
-        <string>图片</string>
+        <string>精度</string>
        </property>
       </widget>
      </item>
@@ -536,7 +526,17 @@ font: 12pt &quot;宋体&quot;;</string>
        </item>
        <item>
         <property name="text">
-         <string>02 RetinaNet</string>
+         <string>02 RetinaFace</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>03 ArcFace</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>04 InsightFace</string>
         </property>
        </item>
       </widget>
@@ -556,11 +556,20 @@ font: 12pt &quot;宋体&quot;;</string>
      <string>关闭</string>
     </property>
    </widget>
+   <widget class="QTextBrowser" name="textBrowser">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>550</y>
+      <width>421</width>
+      <height>151</height>
+     </rect>
+    </property>
+   </widget>
    <zorder>graphicsView</zorder>
    <zorder>progressBar</zorder>
    <zorder>label_videoFile</zorder>
    <zorder>pb_startFileRec</zorder>
-   <zorder>listView</zorder>
    <zorder>pb_saveLog</zorder>
    <zorder>label_camera</zorder>
    <zorder>pb_exit</zorder>
@@ -574,7 +583,7 @@ font: 12pt &quot;宋体&quot;;</string>
    <zorder>comboBox_chooseCamera</zorder>
    <zorder>doubleSpinBox</zorder>
    <zorder>dial_2</zorder>
-   <zorder>pb_refreshUI</zorder>
+   <zorder>pb_stopFace</zorder>
    <zorder>rb_openImage</zorder>
    <zorder>rb_openVideo</zorder>
    <zorder>checkBox_liveDetect</zorder>
@@ -588,6 +597,7 @@ font: 12pt &quot;宋体&quot;;</string>
    <zorder>pb_loadModel</zorder>
    <zorder>verticalLayoutWidget_2</zorder>
    <zorder>pb_closeFile</zorder>
+   <zorder>textBrowser</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

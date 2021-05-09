@@ -1,8 +1,12 @@
-> contributer:datamonday
+# Face Recognition Algorithms Test System
+---
+> contributer: datamonday
 >
-> github:https://github.com/datamonday/FR-AttSys
+> github: https://github.com/datamonday/FR-AttSys
 
 ![main_window](./imgs/main_window.jpg)
+
+![info_window](./imgs/info_window.jpg)
 
 ---
 > Reference:

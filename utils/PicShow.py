@@ -79,7 +79,7 @@ class MainDemo(QWidget):
         super(MainDemo, self).__init__()
 
         self.setWindowTitle("Image Viewer")
-        self.setFixedSize(1000, 600)
+        self.setFixedSize(640, 480)
 
         self.open_file = QPushButton("Open Image")
         self.open_file.setToolTip("Open the image to view.")

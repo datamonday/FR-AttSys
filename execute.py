@@ -24,6 +24,14 @@ from ui.WindowUI import Ui_MainWindow
 from utils import GeneratorModel
 from ui.InfoUI import Ui_Form
 
+# ---------------------- #
+# 如果摄像头打开黑屏
+# 尝试关闭杀毒软件！！！！！！
+# ---------------------- #
+# self.cam_id = 0表示调用默认的摄像头，如果笔记本外接了USB摄像头，可以设置为self.cam_id = 1
+# ---------------------- #
+# 关于人脸图片数量，测试单人100张以上效果比价好，也看到使用SVM建议300张的。手动拍比较麻烦，可以设置自动拍摄，或者通过图像增强的方法。
+
 
 # progress bar class
 class ProBar(QThread):
@@ -91,7 +99,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # ####################### 定义标识符 ######################
         # 被调用摄像头的id
-        self.cam_id = 1
+        self.cam_id = 0
         # try:
         #     print("Starting initialize Camera···")
         #     # 初始化摄像头
@@ -179,7 +187,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # 设置显示文本格式
         self.ui.label_time.setStyleSheet(
             # "QLabel{background:white;}" 此处设置背景色
-            "QLabel{color:rgb(300,300,300,120); font-size:14px; font-weight:bold; font-family:宋体;}"
+            "QLabel{color:rgb(0, 0, 0); font-size:14px; font-weight:bold; font-family:宋体;}"
             "QLabel{font-size:14px; font-weight:bold; font-family:宋体;}")
         datetime = QDateTime.currentDateTime().toString()
         self.ui.label_time.setText("" + datetime)
@@ -327,7 +335,7 @@ class MainWindow(QtWidgets.QMainWindow):
                         # 设置显示分辨率和FPS，否则很卡
                         self.cap2.set(cv2.CAP_PROP_FRAME_WIDTH, 500)
                         self.cap2.set(cv2.CAP_PROP_FRAME_HEIGHT, 400)
-                        self.cap2.set(cv2.CAP_PROP_FPS, 30)
+                        # self.cap2.set(cv2.CAP_PROP_FPS, 24)
 
                         # 启动新的进程，使用display() 函数逐帧读取视频流
                         self.th_display_video = threading.Thread(target=self.display_video)
@@ -364,6 +372,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 # 逐帧读取视频
                 # RGB转BGR
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                frame = imutils.resize(frame, width=500)
                 # 将视频文件resize到label的尺寸
                 # img = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888).scaled(
                 #     self.ui.label_camera.width(), self.ui.label_camera.height())
@@ -422,6 +431,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.textBrowser.moveCursor(self.cursor.End)
             # 初始化摄像头
             # self.cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+
             self.cap = cv2.VideoCapture(self.cam_id)
             # 设置显示分辨率和FPS，否则很卡
             self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 600)
@@ -541,7 +551,7 @@ class MainWindow(QtWidgets.QMainWindow):
             ret, frame = self.cap.read()
             QApplication.processEvents()
             if ret:
-                # 调整框架的大小以使其宽度为900像素（同时保持纵横比），然后抓取图像尺寸
+                # 调整框架的大小以使其宽度为600像素（同时保持纵横比），然后抓取图像尺寸
                 frame = imutils.resize(frame, width=600)
                 (h, w) = frame.shape[:2]
                 # 从图像构造一个blob
@@ -634,7 +644,7 @@ class CollectData(QWidget):
         self.filepath = "./face_dataset/"
 
         # 展示图片缩略图的图片类型
-        self.img_type = 'jpg'
+        self.img_type = 'png'#'jpg'
 
         # 设置图片的预览尺寸
         self.display_img_size = 100
@@ -655,8 +665,10 @@ class CollectData(QWidget):
         # 初始化摄像头
         self.cam_id = 1
         self.cap = cv2.VideoCapture(self.cam_id)
-        # 初始化保存人脸数目
         self.photos = 0
+
+        # 要采集的人脸图像数量
+        self.imgs_num = 100
 
     def handle_click(self):
         if not self.isVisible():
@@ -674,7 +686,7 @@ class CollectData(QWidget):
             self.imgs_num,  ok = QInputDialog.getText(self, '创建人脸数据库', '保存图片数量(整数):')
             if ok and self.text_name != '':
                 if not self.imgs_num:
-                    self.imgs_num = 30
+                    self.imgs_num = 50
                 self.dialog.label_capture.clear()
                 self.cap.open(self.cam_id)
 
@@ -685,7 +697,7 @@ class CollectData(QWidget):
         elif cam_open_flag:
             self.cap.release()
             self.dialog.label_capture.clear()
-            self.dialog.pb_collectInfo.setText(u'采集人像')
+            self.dialog.pb_collectInfo.setText(u'开始采集')
             # self.dialog.lcdNumber.display(0)
 
     def show_capture(self):
@@ -703,7 +715,7 @@ class CollectData(QWidget):
                                               minNeighbors=5, minSize=(30, 30))
             for (x, y, w, h) in rects:
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                frame = cv2.putText(frame, "Have token {}/20 faces".format(self.photos), (50, 60),
+                frame = cv2.putText(frame, "Have token {}/{} faces".format(self.photos, self.imgs_num), (50, 60),
                                      cv2.FONT_HERSHEY_SIMPLEX, 0.7,
                                      (200, 100, 50), 2)
             # 显示输出框架
@@ -744,7 +756,7 @@ class CollectData(QWidget):
             # p = os.path.sep.join([output, "{}.png".format(str(total).zfill(5))])
             # cv2.imwrite(p, self.show_image)
             self.dialog.lcdNumber.display(self.photos)
-            if self.photos == 20:
+            if self.photos == self.imgs_num:
                 QMessageBox.information(self, "Information", self.tr("采集成功!"), QMessageBox.Yes | QMessageBox.No)
         else:
             QMessageBox.information(self, '提示', '请先打开摄像头！')

@@ -526,17 +526,42 @@ font: 12pt &quot;宋体&quot;;</string>
        </item>
        <item>
         <property name="text">
-         <string>02 RetinaFace</string>
+         <string>02 ArcFace</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>03 ArcFace</string>
+         <string>03 RetinaFace</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>04 InsightFace</string>
+         <string>04 CenterFace</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>05 DBFace</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>06 FaceBoxes</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>FD-HOG</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>FD-CNN</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>FD-MTCNN</string>
         </property>
        </item>
       </widget>

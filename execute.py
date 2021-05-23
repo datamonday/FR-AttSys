@@ -663,7 +663,7 @@ class CollectData(QWidget):
         # 初始化信息导入列表
         self.users = []
         # 初始化摄像头
-        self.cam_id = 1
+        self.cam_id = 0
         self.cap = cv2.VideoCapture(self.cam_id)
         self.photos = 0
 
